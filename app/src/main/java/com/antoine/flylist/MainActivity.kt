@@ -6,6 +6,10 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.antoine.flylist.data.Flight
+import com.antoine.flylist.list.FlightsAdapter
 
 class MainActivity : AppCompatActivity() {
 
@@ -17,6 +21,14 @@ class MainActivity : AppCompatActivity() {
         findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
+        }
+
+        findViewById<RecyclerView>(R.id.recycler_view).apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = FlightsAdapter(arrayOf(
+                Flight(0, "Flight 1"),
+                Flight(1, "Flight 2")
+            ))
         }
     }
 
