@@ -1,17 +1,25 @@
 package com.antoine.flylist
 
 import android.os.Bundle
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
-import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.flylist.data.Flight
+import com.antoine.flylist.data.FlightAPI
 import com.antoine.flylist.list.FlightsAdapter
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.snackbar.Snackbar
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+
 
 class MainActivity : AppCompatActivity() {
+
+    private var adapter = FlightsAdapter(arrayOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,11 +33,26 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = FlightsAdapter(arrayOf(
-                Flight(0, "Flight 1"),
-                Flight(1, "Flight 2")
-            ))
+            adapter = this@MainActivity.adapter
         }
+
+        val retrofit = Retrofit.Builder()
+            .baseUrl("https://opensky-network.org/")
+            .build()
+
+        val api: FlightAPI = retrofit.create(FlightAPI::class.java)
+
+        api.listFlights().enqueue(object : Callback<List<Flight>> {
+            override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    adapter.updateList(response.body()!!.toTypedArray())
+                }
+            }
+
+            override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
