@@ -15,6 +15,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,13 +37,15 @@ class MainActivity : AppCompatActivity() {
             adapter = this@MainActivity.adapter
         }
 
+        // API section
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://opensky-network.org/")
+            .baseUrl("https://opensky-network.org/api/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
 
         val api: FlightAPI = retrofit.create(FlightAPI::class.java)
 
-        api.listFlights().enqueue(object : Callback<List<Flight>> {
+        api.listFlights(1517227200, 1517228500).enqueue(object : Callback<List<Flight>> {
             override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
                 if (response.isSuccessful && response.body() != null) {
                     adapter.updateList(response.body()!!.toTypedArray())
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
-                TODO("Not yet implemented")
+                throw t
             }
         })
     }

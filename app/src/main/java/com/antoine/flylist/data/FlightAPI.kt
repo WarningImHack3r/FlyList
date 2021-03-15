@@ -5,6 +5,6 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface FlightAPI {
-    @GET("api")
-    fun listFlights(/*@Query("arrival") arrival: String*/): Call<List<Flight>>
+    @GET("flights/all")
+    fun listFlights(@Query("begin") begin: Int?, @Query("end") end: Int?): Call<List<Flight>>
 }
