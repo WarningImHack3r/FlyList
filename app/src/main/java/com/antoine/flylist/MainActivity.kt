@@ -20,7 +20,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private var adapter = FlightsAdapter(arrayOf())
+    private lateinit var api: FlightAPI
+    private val flightsAdapter = FlightsAdapter(arrayOf())
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,30 +33,19 @@ class MainActivity : AppCompatActivity() {
                     .setAction("Action", null).show()
         }
 
+        // API section
         findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = this@MainActivity.adapter
+            adapter = flightsAdapter
         }
 
-        // API section
-        val retrofit = Retrofit.Builder()
+        api = Retrofit.Builder()
             .baseUrl("https://opensky-network.org/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+            .create(FlightAPI::class.java)
 
-        val api: FlightAPI = retrofit.create(FlightAPI::class.java)
-
-        api.listFlights(1517227200, 1517228500).enqueue(object : Callback<List<Flight>> {
-            override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    adapter.updateList(response.body()!!.toTypedArray())
-                }
-            }
-
-            override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
-                throw t
-            }
-        })
+        updateRecyclerViewWithAPICall(api.allFlights(1517227200, 1517228500))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -72,5 +62,19 @@ class MainActivity : AppCompatActivity() {
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun updateRecyclerViewWithAPICall(call: Call<List<Flight>>) {
+        call.enqueue(object : Callback<List<Flight>> {
+            override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
+                if (response.isSuccessful && response.body() != null) {
+                    flightsAdapter.updateList(response.body()!!.toTypedArray())
+                }
+            }
+
+            override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
+                throw t
+            }
+        })
     }
 }

@@ -16,10 +16,10 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
         flightsHolder.cell.text = dataSet[position].icao24
     }
 
+    override fun getItemCount() = dataSet.size
+
     fun updateList(list: Array<Flight>) {
         dataSet = list
         notifyDataSetChanged()
     }
-
-    override fun getItemCount() = dataSet.size
 }
