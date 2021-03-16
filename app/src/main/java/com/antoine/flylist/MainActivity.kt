@@ -3,6 +3,7 @@ package com.antoine.flylist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,13 +23,14 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var api: FlightAPI
     private val flightsAdapter = FlightsAdapter(arrayOf())
+    private lateinit var lastCall: Call<List<Flight>>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        findViewById<FloatingActionButton>(R.id.fab).setOnClickListener { view ->
+        findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
         }
@@ -49,23 +51,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
         return true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         return when (item.itemId) {
+            R.id.action_refresh -> {
+                updateRecyclerViewWithAPICall(lastCall)
+                return true
+            }
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun updateRecyclerViewWithAPICall(call: Call<List<Flight>>) {
-        call.enqueue(object : Callback<List<Flight>> {
+        if (!flightsAdapter.isEmpty()) flightsAdapter.updateList(arrayOf())
+        lastCall = call
+        call.clone().enqueue(object : Callback<List<Flight>> {
             override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
                 if (response.isSuccessful && response.body() != null) {
                     flightsAdapter.updateList(response.body()!!.toTypedArray())
@@ -73,7 +77,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
-                throw t
+                Toast.makeText(this@MainActivity, "Error: " + t.localizedMessage, Toast.LENGTH_SHORT).show()
             }
         })
     }

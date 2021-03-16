@@ -22,4 +22,6 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
         dataSet = list
         notifyDataSetChanged()
     }
+
+    fun isEmpty() = dataSet.isEmpty()
 }
