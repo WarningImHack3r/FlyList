@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
         findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
+                .setAction("Action", null).show()
         }
 
         // API section
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
             .build()
             .create(FlightAPI::class.java)
 
-        updateRecyclerViewWithAPICall(api.allFlights(1517227200, 1517228500))
+        updateRecyclerViewWithAPICall(api.allFlights(1517227200, 1517229200))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -115,6 +115,7 @@ class MainActivity : AppCompatActivity() {
                     "Error: " + t.localizedMessage,
                     Toast.LENGTH_SHORT
                 ).show()
+                Logger.getGlobal().severe(t.localizedMessage)
             }
         })
     }
