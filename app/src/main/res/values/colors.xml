@@ -4,4 +4,6 @@
     <color name="secondary_color">@android:color/holo_blue_light</color>
     <color name="black">@android:color/background_dark</color>
     <color name="white">@android:color/background_light</color>
+    <color name="gray">#30FFFFFF</color>
+    <color name="light_gray">#60FFFFFF</color>
 </resources>

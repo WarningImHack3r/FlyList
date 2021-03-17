@@ -3,8 +3,12 @@ package com.antoine.flylist
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.flylist.data.Flight
@@ -17,6 +21,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.logging.Logger
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +35,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        findViewById<ProgressBar>(R.id.loading_circle).visibility = View.GONE
+        findViewById<TextView>(R.id.loading_text).visibility = View.GONE
+        findViewById<TextView>(R.id.error_label).visibility = View.GONE
+
         findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
@@ -39,6 +48,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = flightsAdapter
+            addItemDecoration(
+                DividerItemDecoration(
+                    this.context,
+                    (layoutManager as LinearLayoutManager).orientation
+                )
+            )
         }
 
         api = Retrofit.Builder()
@@ -57,9 +72,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            R.id.action_filter -> {
+                true
+            }
             R.id.action_refresh -> {
                 updateRecyclerViewWithAPICall(lastCall)
-                return true
+                true
             }
             R.id.action_settings -> true
             else -> super.onOptionsItemSelected(item)
@@ -67,17 +85,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerViewWithAPICall(call: Call<List<Flight>>) {
+        // Managing UI
         if (!flightsAdapter.isEmpty()) flightsAdapter.updateList(arrayOf())
+        val circle = findViewById<ProgressBar>(R.id.loading_circle)
+        circle.visibility = View.VISIBLE
+        val circleText = findViewById<TextView>(R.id.loading_text)
+        circleText.visibility = View.VISIBLE
+        val errorText = findViewById<TextView>(R.id.error_label)
+        errorText.visibility = View.GONE
+        // Debug log
+        Logger.getGlobal().info(call.request().url().toString())
+        // Calling
         lastCall = call
         call.clone().enqueue(object : Callback<List<Flight>> {
             override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
                 if (response.isSuccessful && response.body() != null) {
+                    circle.visibility = View.GONE
+                    circleText.visibility = View.GONE
                     flightsAdapter.updateList(response.body()!!.toTypedArray())
                 }
             }
 
             override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
-                Toast.makeText(this@MainActivity, "Error: " + t.localizedMessage, Toast.LENGTH_SHORT).show()
+                circle.visibility = View.GONE
+                circleText.visibility = View.GONE
+                errorText.visibility = View.VISIBLE
+                Toast.makeText(
+                    this@MainActivity,
+                    "Error: " + t.localizedMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
