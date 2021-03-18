@@ -94,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun updateRecyclerViewWithAPICall(call: Call<List<Flight>>) {
-        if (call != lastCall) lastCall = call
+        if (!this::lastCall.isInitialized || call != lastCall) lastCall = call
         // Empty Recycler View
         if (!flightsAdapter.isEmpty()) flightsAdapter.updateList(arrayOf())
         // Check for connection
