@@ -1,8 +1,10 @@
 package com.antoine.flylist.list
 
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.antoine.flylist.MainActivity
 import com.antoine.flylist.R
 import com.antoine.flylist.data.Flight
 
@@ -13,7 +15,14 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(flightsHolder: FlightsHolder, position: Int) {
-        flightsHolder.cell.text = dataSet[position].icao24
+        val flight = dataSet[position]
+        flightsHolder.aircraft.text = flight.icao24
+        flightsHolder.departure.text = Resources.getSystem().getString(
+            R.string.departure_time,
+            MainActivity.epochToDate(flight.firstSeen.toString())
+        )
+        flightsHolder.arrival.text = Resources.getSystem()
+            .getString(R.string.arrival_time, MainActivity.epochToDate(flight.lastSeen.toString()))
     }
 
     override fun getItemCount() = dataSet.size
