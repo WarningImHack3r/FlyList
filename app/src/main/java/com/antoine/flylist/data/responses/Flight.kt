@@ -1,4 +1,4 @@
-package com.antoine.flylist.data
+package com.antoine.flylist.data.responses
 
 data class Flight(
     val icao24: String, // Unique 24-bit address of the transponder in hex

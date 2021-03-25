@@ -1,5 +1,6 @@
-package com.antoine.flylist.data
+package com.antoine.flylist.data.api
 
+import com.antoine.flylist.data.responses.Flight
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

@@ -1,4 +1,4 @@
-package com.antoine.flylist
+package com.antoine.flylist.activities
 
 import android.content.Context
 import android.net.ConnectivityManager
@@ -14,9 +14,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.antoine.flylist.data.AircraftAPI
-import com.antoine.flylist.data.Flight
-import com.antoine.flylist.data.FlightAPI
+import com.antoine.flylist.R
+import com.antoine.flylist.data.api.APIManager
+import com.antoine.flylist.data.responses.Flight
 import com.antoine.flylist.io.CheckNetwork
 import com.antoine.flylist.list.FlightsAdapter
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,19 +24,12 @@ import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import java.text.SimpleDateFormat
-import java.time.Instant
-import java.time.format.DateTimeFormatter
 import java.util.*
 import java.util.logging.Logger
 
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var flightAPI: FlightAPI
-    private lateinit var aircraftAPI: AircraftAPI
     private val flightsAdapter = FlightsAdapter(arrayOf())
     private lateinit var lastCall: Call<List<Flight>>
 
@@ -73,19 +66,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        flightAPI = Retrofit.Builder()
-            .baseUrl("https://opensky-network.org/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(FlightAPI::class.java)
-
-        aircraftAPI = Retrofit.Builder()
-            .baseUrl("https://api.joshdouch.me/api/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(AircraftAPI::class.java)
-
-        updateRecyclerViewWithAPICall(flightAPI.allFlights(1517227200, 1517229200))
+        updateRecyclerViewWithAPICall(APIManager.flightAPI.allFlights(1517227200, 1517229200))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -150,22 +131,8 @@ class MainActivity : AppCompatActivity() {
                     "Error: " + t.localizedMessage,
                     Toast.LENGTH_SHORT
                 ).show()
-                Logger.getGlobal().severe("Error: " + t.localizedMessage)
+                Logger.getGlobal().severe(t.stackTraceToString())
             }
         })
-    }
-
-    companion object {
-        fun epochToDate(epoch: String): String {
-            return if (Build.VERSION.SDK_INT >= 26) {
-                DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(epoch.toLong()))
-            } else {
-                SimpleDateFormat.getDateTimeInstance().format(Date(epoch.toLong() * 1000))
-            }.replace("T", " ").replace("Z", " ").trim()
-        }
-
-        fun dateToEpoch(date: String): String {
-            return SimpleDateFormat.getDateTimeInstance().parse(date)?.time.toString()
-        }
     }
 }
