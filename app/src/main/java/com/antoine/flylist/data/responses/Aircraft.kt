@@ -1,8 +1,6 @@
-package com.antoine.flylist.data
+package com.antoine.flylist.data.responses
 
 data class Aircraft(
-    // TODO: nullable?, finish implementation, search for airport API
-    // wait for prof tutorial for another API + images?
     val ModeS: String,
     val Manufacturer: String,
     val Type: String,

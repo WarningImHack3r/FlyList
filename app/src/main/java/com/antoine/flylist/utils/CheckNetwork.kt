@@ -1,4 +1,4 @@
-package com.antoine.flylist.io
+package com.antoine.flylist.utils
 
 import android.content.Context
 import android.net.ConnectivityManager

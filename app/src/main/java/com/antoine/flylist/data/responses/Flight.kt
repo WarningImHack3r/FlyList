@@ -2,9 +2,9 @@ package com.antoine.flylist.data.responses
 
 data class Flight(
     val icao24: String, // Unique 24-bit address of the transponder in hex
-    var firstSeen: Int, // UNIX epoch timestamp of flight departure
+    var firstSeen: Long, // UNIX epoch timestamp of flight departure
     val estDepartureAirport: String?, // ICAO code of the departure airport
-    var lastSeen: Int, // UNIX epoch timestamp of flight arrival
+    var lastSeen: Long, // UNIX epoch timestamp of flight arrival
     val estArrivalAirport: String?, // ICAO code of the arrival airport
     val callsign: String?, // Callsign of the plane
     val estDepartureAirportHorizDistance: Int?, // Horizontal distance from the departure airport

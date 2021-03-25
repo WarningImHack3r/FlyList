@@ -17,8 +17,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.antoine.flylist.R
 import com.antoine.flylist.data.api.APIManager
 import com.antoine.flylist.data.responses.Flight
-import com.antoine.flylist.io.CheckNetwork
 import com.antoine.flylist.list.FlightsAdapter
+import com.antoine.flylist.utils.CheckNetwork
+import com.antoine.flylist.utils.Utils
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
@@ -29,6 +30,7 @@ import java.util.logging.Logger
 
 
 class MainActivity : AppCompatActivity() {
+    // detail, change lastCall, floating button, filter button
 
     private val flightsAdapter = FlightsAdapter(arrayOf())
     private lateinit var lastCall: Call<List<Flight>>
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.error_label).visibility = View.GONE
         findViewById<TextView>(R.id.no_connection_label).visibility = View.GONE
 
+        // TODO: Floating button
         findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
@@ -66,7 +69,9 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        updateRecyclerViewWithAPICall(APIManager.flightAPI.allFlights(1517227200, 1517229200))
+        val epochPast = Utils.dateToEpoch(Date(System.currentTimeMillis() - 3600 * 24000))
+        val epochNow = Utils.dateToEpoch(Date(System.currentTimeMillis() - 3600 * 23000))
+        updateRecyclerViewWithAPICall(APIManager.FLIGHT_API.allFlights(epochPast, epochNow))
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,6 +82,7 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_filter -> {
+                // TODO: implement this
                 true
             }
             R.id.action_refresh -> {
@@ -96,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         val errorText = findViewById<TextView>(R.id.error_label)
         errorText.visibility = View.GONE
         val noInternet = findViewById<TextView>(R.id.no_connection_label)
+        @Suppress("DEPRECATION")
         if ((Build.VERSION.SDK_INT >= 24 && CheckNetwork.hasConnection) || (Build.VERSION.SDK_INT < 24 && (applicationContext.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager).activeNetworkInfo?.isConnected == true)
@@ -115,10 +122,20 @@ class MainActivity : AppCompatActivity() {
         // Calling
         call.clone().enqueue(object : Callback<List<Flight>> {
             override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
-                if (response.isSuccessful && response.body() != null) {
-                    circle.visibility = View.GONE
-                    circleText.visibility = View.GONE
-                    flightsAdapter.updateList(response.body()!!.toTypedArray())
+                circle.visibility = View.GONE
+                circleText.visibility = View.GONE
+                if (response.isSuccessful) {
+                    if (response.body() != null) {
+                        flightsAdapter.updateList(response.body()!!.toTypedArray())
+                    } else {
+                        errorText.visibility = View.VISIBLE
+                        errorText.text = response.message()
+                    }
+                } else {
+                    errorText.visibility = View.VISIBLE
+                    errorText.text =
+                        response.errorBody()!!.string().replace("[", "").replace("]", "")
+                            .replace("\"", "")
                 }
             }
 
