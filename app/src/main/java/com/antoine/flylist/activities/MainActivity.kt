@@ -30,7 +30,6 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     // detail, change lastCall, floating button, filter button
 
-    private lateinit var swipeContainer: SwipeRefreshLayout
     private lateinit var viewModel: FlightViewModel
     private val flightsAdapter = FlightsAdapter(arrayOf())
     private lateinit var lastCall: Call<List<Flight>>
@@ -40,16 +39,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(findViewById(R.id.toolbar))
 
-        // Views hiding
-        findViewById<ProgressBar>(R.id.loading_circle).visibility = View.GONE
-        findViewById<TextView>(R.id.loading_text).visibility = View.GONE
-        findViewById<TextView>(R.id.error_label).visibility = View.GONE
-        findViewById<TextView>(R.id.no_connection_label).visibility = View.GONE
-
         // Swipe container
-        swipeContainer = findViewById(R.id.swipeContainer)
-        swipeContainer.setColorSchemeResources(R.color.main_color, R.color.secondary_color)
-        swipeContainer.setOnRefreshListener {
+        findViewById<SwipeRefreshLayout>(R.id.swipeContainer).setColorSchemeResources(
+            R.color.main_color,
+            R.color.secondary_color
+        )
+        findViewById<SwipeRefreshLayout>(R.id.swipeContainer).setOnRefreshListener {
             updateRecyclerViewWithAPICall(lastCall)
         }
 
@@ -120,15 +115,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         // View model
-        viewModel.setCall(call)
-        viewModel.flightList.observe(this, {
+        viewModel.call = call
+        viewModel.addListObserver(this) {
             findViewById<ProgressBar>(R.id.loading_circle).isVisible = it is FetchLoading
             findViewById<TextView>(R.id.loading_text).isVisible = it is FetchLoading
             findViewById<TextView>(R.id.error_label).isVisible = it is FetchError
             if (it is FetchSuccess) flightsAdapter.updateList(it.flightList.toTypedArray())
-        })
+        }
 
         // Swipe container
+        val swipeContainer = findViewById<SwipeRefreshLayout>(R.id.swipeContainer)
         if (swipeContainer.isRefreshing) swipeContainer.isRefreshing = false
     }
 }

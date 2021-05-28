@@ -11,44 +11,30 @@ import java.util.concurrent.TimeUnit
 
 class APIManager {
     companion object {
-        private val cache = Cache(File(context?.cacheDir, "responses"), 10 * 1024 * 1024)
+        private val client = OkHttpClient()
+            .newBuilder()
+            .cache(Cache(File(context?.cacheDir, "responses"), 10 * 1024 * 1024))
+            .readTimeout(15, TimeUnit.SECONDS)
+            .build()
 
         val FLIGHT_API: FlightAPI = Retrofit.Builder()
             .baseUrl("https://opensky-network.org/api/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(
-                OkHttpClient()
-                    .newBuilder()
-                    .cache(cache)
-                    .readTimeout(15, TimeUnit.SECONDS)
-                    .build()
-            )
+            .client(client)
             .build()
             .create(FlightAPI::class.java)
 
         val AIRCRAFT_API: AircraftAPI = Retrofit.Builder()
             .baseUrl("https://api.joshdouch.me/api/")
             .addConverterFactory(GsonConverterFactory.create())
-            .client(
-                OkHttpClient()
-                    .newBuilder()
-                    .cache(cache)
-                    .readTimeout(15, TimeUnit.SECONDS)
-                    .build()
-            )
+            .client(client)
             .build()
             .create(AircraftAPI::class.java)
 
         val UTILITIES_API: UtilitiesAPI = Retrofit.Builder()
             .baseUrl("https://api.joshdouch.me/")
             .addConverterFactory(ScalarsConverterFactory.create())
-            .client(
-                OkHttpClient()
-                    .newBuilder()
-                    .cache(cache)
-                    .readTimeout(15, TimeUnit.SECONDS)
-                    .build()
-            )
+            .client(client)
             .build()
             .create(UtilitiesAPI::class.java)
     }
