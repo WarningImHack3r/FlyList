@@ -10,4 +10,5 @@
     <string name="arrival_time">Arrival: %1$s</string>
     <string name="airline_logo">Airline logo</string>
     <string name="buy">Buy</string>
+    <string name="flight_detail_title">Flight %1$s</string>
 </resources>

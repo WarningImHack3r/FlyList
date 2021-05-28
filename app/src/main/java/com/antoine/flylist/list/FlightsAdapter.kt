@@ -1,10 +1,12 @@
 package com.antoine.flylist.list
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.antoine.flylist.FlyListApplication.Companion.context
 import com.antoine.flylist.R
+import com.antoine.flylist.activities.DetailActivity
 import com.antoine.flylist.data.api.APIManager
 import com.antoine.flylist.data.responses.Flight
 import com.antoine.flylist.utils.Utils
@@ -21,13 +23,14 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(flightsHolder: FlightsHolder, position: Int) {
+        val rowContext = flightsHolder.itemView.context
         val flight = dataSet[position]
         APIManager.UTILITIES_API.airlineLogo(flight.icao24).enqueue(object : Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 if (response.isSuccessful && response.body() != null && response.body() != "n/a") {
                     Utils.loadImageFromURL(
                         response.body()!!,
-                        flightsHolder.itemView.context,
+                        rowContext,
                         flightsHolder.airline
                     )
                 }
@@ -38,7 +41,7 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
             }
 
         })
-        flightsHolder.aircraft.text = flight.icao24.toUpperCase(Locale.ROOT)
+        flightsHolder.aircraft.text = flight.icao24.uppercase(Locale.ROOT)
         flightsHolder.departure.text = context?.getString(
             R.string.departure_time,
             Utils.epochToReadableDate(flight.firstSeen)
@@ -47,6 +50,12 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
             R.string.arrival_time,
             Utils.epochToReadableDate(flight.lastSeen)
         )
+
+        flightsHolder.itemView.setOnClickListener {
+            val intent = Intent(rowContext, DetailActivity::class.java)
+            intent.putExtra("icao", flightsHolder.aircraft.text)
+            rowContext.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = dataSet.size

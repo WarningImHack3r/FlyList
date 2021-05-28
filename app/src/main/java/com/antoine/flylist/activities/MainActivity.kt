@@ -6,7 +6,6 @@ import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -102,17 +101,13 @@ class MainActivity : AppCompatActivity() {
         // Empty Recycler View
         if (!flightsAdapter.isEmpty()) flightsAdapter.updateList(arrayOf())
         // Check for connection
-        val noInternet = findViewById<TextView>(R.id.no_connection_label)
         @Suppress("DEPRECATION")
-        if ((Build.VERSION.SDK_INT >= 24 && CheckNetwork.hasConnection) || (Build.VERSION.SDK_INT < 24 && (applicationContext.getSystemService(
+        val hasConnection =
+            (Build.VERSION.SDK_INT >= 24 && CheckNetwork.hasConnection) || (Build.VERSION.SDK_INT < 24 && (applicationContext.getSystemService(
                 Context.CONNECTIVITY_SERVICE
             ) as ConnectivityManager).activeNetworkInfo?.isConnected == true)
-        ) {
-            noInternet.visibility = View.GONE
-        } else {
-            noInternet.visibility = View.VISIBLE
-            return
-        }
+        findViewById<TextView>(R.id.no_connection_label).isVisible = !hasConnection
+        if (!hasConnection) return
 
         // View model
         viewModel.call = call
