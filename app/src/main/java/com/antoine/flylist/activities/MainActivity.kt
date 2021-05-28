@@ -14,6 +14,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.antoine.flylist.R
 import com.antoine.flylist.data.api.APIManager
 import com.antoine.flylist.data.responses.Flight
@@ -29,6 +30,7 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
     // detail, change lastCall, floating button, filter button
 
+    private lateinit var swipeContainer: SwipeRefreshLayout
     private lateinit var viewModel: FlightViewModel
     private val flightsAdapter = FlightsAdapter(arrayOf())
     private lateinit var lastCall: Call<List<Flight>>
@@ -43,6 +45,12 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.loading_text).visibility = View.GONE
         findViewById<TextView>(R.id.error_label).visibility = View.GONE
         findViewById<TextView>(R.id.no_connection_label).visibility = View.GONE
+
+        swipeContainer = findViewById(R.id.swipeContainer)
+        swipeContainer.setColorSchemeResources(R.color.main_color, R.color.secondary_color)
+        swipeContainer.setOnRefreshListener {
+            updateRecyclerViewWithAPICall(lastCall)
+        }
 
         // TODO: Floating button
         findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
@@ -109,6 +117,7 @@ class MainActivity : AppCompatActivity() {
             noInternet.visibility = View.VISIBLE
             return
         }
+
         // View model
         viewModel.setCall(call)
         viewModel.flightList.observe(this, {
@@ -117,5 +126,8 @@ class MainActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.error_label).isVisible = it is FetchError
             if (it is FetchSuccess) flightsAdapter.updateList(it.flightList.toTypedArray())
         })
+
+        // Swipe container
+        if (swipeContainer.isRefreshing) swipeContainer.isRefreshing = false
     }
 }
