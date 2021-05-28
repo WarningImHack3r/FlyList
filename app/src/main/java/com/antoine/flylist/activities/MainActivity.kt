@@ -46,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.error_label).visibility = View.GONE
         findViewById<TextView>(R.id.no_connection_label).visibility = View.GONE
 
+        // Swipe container
         swipeContainer = findViewById(R.id.swipeContainer)
         swipeContainer.setColorSchemeResources(R.color.main_color, R.color.secondary_color)
         swipeContainer.setOnRefreshListener {

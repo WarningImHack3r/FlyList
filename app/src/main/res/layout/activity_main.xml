@@ -31,6 +31,6 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/action_button_margin"
         app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
-        android:contentDescription="@string/send_email" />
+        android:contentDescription="@string/buy" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
