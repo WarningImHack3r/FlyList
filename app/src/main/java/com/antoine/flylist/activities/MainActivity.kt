@@ -20,8 +20,6 @@ import com.antoine.flylist.data.responses.Flight
 import com.antoine.flylist.list.*
 import com.antoine.flylist.utils.CheckNetwork
 import com.antoine.flylist.utils.Utils
-import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.google.android.material.snackbar.Snackbar
 import retrofit2.Call
 import java.util.*
 
@@ -45,12 +43,6 @@ class MainActivity : AppCompatActivity() {
         )
         findViewById<SwipeRefreshLayout>(R.id.swipeContainer).setOnRefreshListener {
             updateRecyclerViewWithAPICall(lastCall)
-        }
-
-        // TODO: Floating button
-        findViewById<FloatingActionButton>(R.id.floating_button).setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
         }
 
         // Network
