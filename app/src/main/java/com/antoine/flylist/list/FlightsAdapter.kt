@@ -25,23 +25,28 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
     override fun onBindViewHolder(flightsHolder: FlightsHolder, position: Int) {
         val rowContext = flightsHolder.itemView.context
         val flight = dataSet[position]
-        APIManager.UTILITIES_API.airlineLogo(flight.icao24).enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful && response.body() != null && response.body() != "n/a") {
-                    Utils.loadImageFromURL(
-                        response.body()!!,
-                        rowContext,
-                        flightsHolder.airline
-                    )
+        flight.icao24?.let {
+            APIManager.UTILITIES_API.airlineLogo(it).enqueue(object : Callback<String> {
+                override fun onResponse(call: Call<String>, response: Response<String>) {
+                    if (response.isSuccessful && response.body() != null && response.body()
+                            .toString().lowercase() != "n/a"
+                    ) {
+                        Utils.loadImageFromURL(
+                            rowContext,
+                            response.body().toString(),
+                            flightsHolder.airline,
+                            1000, 55
+                        )
+                    }
                 }
-            }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Logger.getGlobal().severe(t.stackTraceToString())
-            }
+                override fun onFailure(call: Call<String>, t: Throwable) {
+                    Logger.getGlobal().severe(t.stackTraceToString())
+                }
 
-        })
-        flightsHolder.aircraft.text = flight.icao24.uppercase(Locale.ROOT)
+            })
+        }
+        flightsHolder.aircraft.text = flight.icao24?.uppercase(Locale.ROOT) ?: ""
         flightsHolder.departure.text = context?.getString(
             R.string.departure_time,
             Utils.epochToReadableDate(flight.firstSeen)
@@ -53,7 +58,7 @@ class FlightsAdapter(private var dataSet : Array<Flight>) : RecyclerView.Adapter
 
         flightsHolder.itemView.setOnClickListener {
             val intent = Intent(rowContext, DetailActivity::class.java)
-            intent.putExtra("icao", flightsHolder.aircraft.text)
+            intent.putExtra("flight", flight)
             rowContext.startActivity(intent)
         }
     }

@@ -25,7 +25,7 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
-    // detail, change lastCall, floating button, filter button
+    // change lastCall, floating button, filter button, settings
 
     private lateinit var viewModel: FlightViewModel
     private val flightsAdapter = FlightsAdapter(arrayOf())
@@ -83,7 +83,10 @@ class MainActivity : AppCompatActivity() {
                 updateRecyclerViewWithAPICall(lastCall)
                 true
             }
-            R.id.action_settings -> true
+            R.id.action_settings -> {
+                // TODO: implement this too
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

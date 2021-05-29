@@ -25,14 +25,19 @@ class Utils {
             return (date.time / 10.0.pow(date.time.toString().length - 10)).toLong()
         }
 
-        fun loadImageFromURL(url: String, context: Context, view: ImageView) {
+        fun loadImageFromURL(
+            context: Context,
+            url: String,
+            view: ImageView,
+            width: Int = 0,
+            height: Int = 0
+        ) {
             Logger.getGlobal().info("Loading image from: $url")
-            Glide
-                .with(context)
+            val glide = Glide.with(context)
                 .load(url)
-                .override(1000, 55)
                 .fitCenter()
-                .into(view)
+            if (width > 0 && height > 0) glide.override(width, height)
+            glide.into(view)
         }
     }
 }

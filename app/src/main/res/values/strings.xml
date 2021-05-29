@@ -11,4 +11,19 @@
     <string name="airline_logo">Airline logo</string>
     <string name="buy">Buy</string>
     <string name="flight_detail_title">Flight %1$s</string>
+    <string name="icao">ICAO:</string>
+    <string name="departure_airport">Departure airport:</string>
+    <string name="plane_type">Plane type:</string>
+    <string name="flight_title">Flight</string>
+    <string name="plane_title">Plane</string>
+    <string name="manufacturer">Manufacturer:</string>
+    <string name="first_seen">First seen at:</string>
+    <string name="last_seen">Last seen at:</string>
+    <string name="arrival_airport">Arrival airport:</string>
+    <string name="callsign">Callsign:</string>
+    <string name="modes">Mode S:</string>
+    <string name="owners">Owners:</string>
+    <string name="flag_code">Flag code:</string>
+    <string name="n_a">N/A</string>
+    <string name="plane_icao">Type ICAO:</string>
 </resources>

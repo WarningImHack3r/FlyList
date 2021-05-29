@@ -4,7 +4,7 @@
     <string name="action_settings">Options</string>
     <string name="refresh">Rafraîchir</string>
     <string name="loading_data">Chargement des données…</string>
-    <string name="an_error_occurred_while_loading_data">Une erreur est survenue lors du chargement.</string>
+    <string name="an_error_occurred_while_loading_data">Une erreur est survenue lors du chargement. Veuillez réessayer.</string>
     <string name="filter">Filtre</string>
     <string name="no_internet_connection">Aucune connexion</string>
     <string name="departure_time">Départ : %1$s</string>
@@ -12,4 +12,19 @@
     <string name="airline_logo">Logo de la compagnie</string>
     <string name="buy">Acheter</string>
     <string name="flight_detail_title">Vol %1$s</string>
+    <string name="icao">ICAO :</string>
+    <string name="departure_airport">Aéroport de départ :</string>
+    <string name="plane_type">Type d\'avion :</string>
+    <string name="flight_title">Vol</string>
+    <string name="plane_title">Avion</string>
+    <string name="manufacturer">Constructeur :</string>
+    <string name="callsign">Callsign :</string>
+    <string name="first_seen">Première aperçue à :</string>
+    <string name="last_seen">Dernière aperçue à :</string>
+    <string name="arrival_airport">Aéroport d\'arrivée :</string>
+    <string name="modes">Mode S :</string>
+    <string name="owners">Propriétaires :</string>
+    <string name="flag_code">Code drapeau :</string>
+    <string name="n_a">N/A</string>
+    <string name="plane_icao">ICAO de type :</string>
 </resources>
