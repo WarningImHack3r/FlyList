@@ -89,7 +89,7 @@ class MainActivity : AppCompatActivity() {
                 viewModel.call = viewModel.call
                 true
             }
-            R.id.action_settings -> {
+            R.id.action_about -> {
                 // TODO: implement this too
                 true
             }

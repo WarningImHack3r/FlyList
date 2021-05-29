@@ -16,10 +16,9 @@
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_settings"
-        android:title="@string/action_settings"
-        android:icon="@drawable/ic_baseline_settings_24"
-        android:orderInCategory="100"
-        app:showAsAction="never" />
+        android:id="@+id/action_about"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/action_about"
+        app:showAsAction="ifRoom" />
 
 </menu>

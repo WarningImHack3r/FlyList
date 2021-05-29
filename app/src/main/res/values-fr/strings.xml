@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">FlyList</string>
-    <string name="action_settings">Options</string>
+    <string name="action_about">À propos</string>
     <string name="refresh">Rafraîchir</string>
     <string name="loading_data">Chargement des données…</string>
     <string name="an_error_occurred_while_loading_data">Une erreur est survenue lors du chargement. Veuillez réessayer.</string>
