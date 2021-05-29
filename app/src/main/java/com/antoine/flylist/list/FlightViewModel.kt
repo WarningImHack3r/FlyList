@@ -17,7 +17,7 @@ open class FlightViewModel(initialCall: Call<List<Flight>>) : ViewModel() {
     open var call: Call<List<Flight>> = initialCall
         set(value) {
             field = value
-            callApi()
+            if (flightList.hasObservers()) callApi()
         }
 
     private fun callApi() {
@@ -50,7 +50,7 @@ open class FlightViewModel(initialCall: Call<List<Flight>>) : ViewModel() {
         })
     }
 
-    fun addListObserver(owner: LifecycleOwner, observer: (FlightModel) -> Unit) {
+    fun registerObserver(owner: LifecycleOwner, observer: (FlightModel) -> Unit) {
         flightList.observe(owner, observer)
     }
 }

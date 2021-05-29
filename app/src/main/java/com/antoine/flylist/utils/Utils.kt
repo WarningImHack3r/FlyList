@@ -13,6 +13,10 @@ import kotlin.math.pow
 
 class Utils {
     companion object {
+        fun epochNowMinusHour(hours: Int): Long {
+            return dateToEpoch(Date(System.currentTimeMillis() - 3600 * (hours * 1000)))
+        }
+
         fun epochToReadableDate(epoch: Long): String {
             return if (Build.VERSION.SDK_INT >= 26) {
                 DateTimeFormatter.ISO_INSTANT.format(Instant.ofEpochSecond(epoch))

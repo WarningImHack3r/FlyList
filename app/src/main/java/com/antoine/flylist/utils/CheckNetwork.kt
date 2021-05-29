@@ -6,20 +6,29 @@ import android.net.ConnectivityManager.NetworkCallback
 import android.net.Network
 import android.net.NetworkRequest
 import android.os.Build
-import androidx.annotation.RequiresApi
+import com.antoine.flylist.FlyListApplication.Companion.context
 
 
-class CheckNetwork(private val context: Context) {
+open class CheckNetwork {
+    open var hasConnection: Boolean? = null
+        get() {
+            if (Build.VERSION.SDK_INT < 24 || field == null) {
+                @Suppress("DEPRECATION")
+                return connectivityManager.activeNetworkInfo?.isConnected == true
+            }
+            return field
+        }
+
+    private var connectivityManager: ConnectivityManager =
+        context?.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+
     companion object {
-        var hasConnection = false
+        val instance = CheckNetwork()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
-    fun registerNetworkCallback() {
-        try {
-            val connectivityManager =
-                context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-            NetworkRequest.Builder()
+    init {
+        NetworkRequest.Builder()
+        if (Build.VERSION.SDK_INT >= 24) {
             connectivityManager.registerDefaultNetworkCallback(object : NetworkCallback() {
                 override fun onAvailable(network: Network) {
                     hasConnection = true
@@ -28,10 +37,12 @@ class CheckNetwork(private val context: Context) {
                 override fun onLost(network: Network) {
                     hasConnection = false
                 }
+
+                override fun onUnavailable() {
+                    super.onUnavailable()
+                    hasConnection = false
+                }
             })
-            hasConnection = false
-        } catch (e: Exception) {
-            hasConnection = false
         }
     }
 }
