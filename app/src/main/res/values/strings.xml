@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">FlyList</string>
-    <string name="action_about">About</string>
+    <string name="app_name" translatable="false">FlyList</string>
     <string name="refresh">Refresh</string>
     <string name="loading_data">Loading data…</string>
     <string name="an_error_occurred_while_loading_data">An error occurred while loading data.\nPlease try again.</string>
@@ -24,6 +23,15 @@
     <string name="modes">Mode S:</string>
     <string name="owners">Owners:</string>
     <string name="flag_code">Flag code:</string>
-    <string name="n_a">N/A</string>
+    <string name="n_a" translatable="false">N/A</string>
     <string name="plane_icao">Type ICAO:</string>
+    <string name="search">Search</string>
+    <string name="beginning_date">Beginning date</string>
+    <string name="ending_date">Ending date</string>
+    <string name="all_flights">All Flights</string>
+    <string name="by_aircraft">By Aircraft</string>
+    <string name="dep_by_airport">Departures by Airport</string>
+    <string name="arr_by_airport">Arrivals by Airport</string>
+    <string name="mandatory_icao24">ICAO24 *</string>
+    <string name="mandatory_airport">Airport codename *</string>
 </resources>

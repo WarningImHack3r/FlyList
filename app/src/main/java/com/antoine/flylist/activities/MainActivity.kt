@@ -13,16 +13,16 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.antoine.flylist.R
 import com.antoine.flylist.data.api.APIManager
+import com.antoine.flylist.fragments.ModalFragment
 import com.antoine.flylist.list.*
 import com.antoine.flylist.utils.CheckNetwork
 import com.antoine.flylist.utils.Utils
 
 
 class MainActivity : AppCompatActivity() {
-    // change lastCall, floating button, filter button, settings
+    // TODO: detail async + mvvm, floating button
 
-    private lateinit var viewModel: FlightViewModel
-    private val flightsAdapter = FlightsAdapter(arrayOf())
+    lateinit var viewModel: FlightViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         // Recycler View
+        val flightsAdapter = FlightsAdapter(arrayOf())
         findViewById<RecyclerView>(R.id.recycler_view).apply {
             layoutManager = LinearLayoutManager(context)
             adapter = flightsAdapter
@@ -81,16 +82,14 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            R.id.action_filter -> {
-                // TODO: implement this
-                true
-            }
             R.id.action_refresh -> {
                 viewModel.call = viewModel.call
                 true
             }
-            R.id.action_about -> {
-                // TODO: implement this too
+
+            R.id.action_filter -> {
+                supportFragmentManager.beginTransaction().add(ModalFragment(), null)
+                    .addToBackStack(null).commit()
                 true
             }
             else -> super.onOptionsItemSelected(item)

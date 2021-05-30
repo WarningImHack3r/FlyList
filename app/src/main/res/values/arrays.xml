@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="api_call_array">
+        <item>@string/all_flights</item>
+        <item>@string/by_aircraft</item>
+        <item>@string/dep_by_airport</item>
+        <item>@string/arr_by_airport</item>
+    </string-array>
+</resources>

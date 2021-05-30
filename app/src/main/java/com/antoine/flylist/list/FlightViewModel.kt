@@ -22,6 +22,7 @@ open class FlightViewModel(initialCall: Call<List<Flight>>) : ViewModel() {
 
     private fun callApi() {
         flightList.value = FetchLoading
+        Logger.getGlobal().severe(call.request().url().toString())
         call.clone().enqueue(object : Callback<List<Flight>> {
             override fun onResponse(call: Call<List<Flight>>, response: Response<List<Flight>>) {
                 if (response.isSuccessful) {
@@ -29,20 +30,22 @@ open class FlightViewModel(initialCall: Call<List<Flight>>) : ViewModel() {
                         flightList.value = FetchSuccess(response.body()!!)
                     } else {
                         flightList.value = FetchError(response.message())
+                        Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
                     }
                 } else {
-                    flightList.value = FetchError(
+                    val errorString =
                         response.errorBody()!!.string().replace("[", "").replace("]", "")
                             .replace("\"", "")
-                    )
+                    flightList.value = FetchError(errorString)
+                    Toast.makeText(context, errorString, Toast.LENGTH_LONG).show()
                 }
             }
 
             override fun onFailure(call: Call<List<Flight>>, t: Throwable) {
-                flightList.value = FetchError()
+                flightList.value = FetchError(t.localizedMessage)
                 Toast.makeText(
                     context,
-                    "Error: " + t.localizedMessage,
+                    t.localizedMessage,
                     Toast.LENGTH_SHORT
                 ).show()
                 Logger.getGlobal().severe(t.stackTraceToString())

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context=".fragments.ModalFragment">
+
+    <!-- Mandatory items -->
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp" />
+
+    <Button
+        android:id="@+id/beginning_date_picker"
+        style="@style/Widget.MaterialComponents.TimePicker.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/beginning_date" />
+
+    <Button
+        android:id="@+id/ending_date_picker"
+        style="@style/Widget.MaterialComponents.TimePicker.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:text="@string/ending_date" />
+
+    <!-- Dynamic items -->
+    <EditText
+        android:id="@+id/mandatory_icao24"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/mandatory_icao24"
+        android:importantForAutofill="no"
+        android:inputType="textCapCharacters"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/mandatory_airport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:hint="@string/mandatory_airport"
+        android:importantForAutofill="no"
+        android:inputType="textCapCharacters"
+        android:visibility="gone" />
+
+    <!-- Search button -->
+    <Button
+        android:id="@+id/searchButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:text="@string/search" />
+
+</LinearLayout>

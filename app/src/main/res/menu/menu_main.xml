@@ -4,21 +4,15 @@
     tools:context="com.antoine.flylist.activities.MainActivity">
 
     <item
-        android:id="@+id/action_filter"
-        android:icon="@drawable/ic_baseline_filter_alt_24"
-        android:title="@string/filter"
-        app:showAsAction="ifRoom" />
-
-    <item
         android:id="@+id/action_refresh"
         android:title="@string/refresh"
         android:icon="@drawable/ic_baseline_refresh_24"
         app:showAsAction="ifRoom" />
 
     <item
-        android:id="@+id/action_about"
-        android:icon="@drawable/ic_baseline_info_24"
-        android:title="@string/action_about"
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_baseline_filter_alt_24"
+        android:title="@string/filter"
         app:showAsAction="ifRoom" />
 
 </menu>

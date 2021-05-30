@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FlyList</string>
-    <string name="action_about">À propos</string>
     <string name="refresh">Rafraîchir</string>
     <string name="loading_data">Chargement des données…</string>
     <string name="an_error_occurred_while_loading_data">Une erreur est survenue lors du chargement. Veuillez réessayer.</string>
@@ -12,7 +10,7 @@
     <string name="airline_logo">Logo de la compagnie</string>
     <string name="buy">Acheter</string>
     <string name="flight_detail_title">Vol %1$s</string>
-    <string name="icao">ICAO :</string>
+    <string name="icao">OACI :</string>
     <string name="departure_airport">Aéroport de départ :</string>
     <string name="plane_type">Type d\'avion :</string>
     <string name="flight_title">Vol</string>
@@ -25,6 +23,14 @@
     <string name="modes">Mode S :</string>
     <string name="owners">Propriétaires :</string>
     <string name="flag_code">Code drapeau :</string>
-    <string name="n_a">N/A</string>
-    <string name="plane_icao">ICAO de type :</string>
+    <string name="plane_icao">OACI de type :</string>
+    <string name="search">Rechercher</string>
+    <string name="beginning_date">Date de début</string>
+    <string name="ending_date">Date de fin</string>
+    <string name="all_flights">Tous les vols</string>
+    <string name="by_aircraft">Par avion</string>
+    <string name="dep_by_airport">Départs par aéroport</string>
+    <string name="arr_by_airport">Arrivées par aéroport</string>
+    <string name="mandatory_icao24">OACI24 *</string>
+    <string name="mandatory_airport">Aéroport (code) *</string>
 </resources>
