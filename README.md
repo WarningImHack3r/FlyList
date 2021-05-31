@@ -1,3 +1,5 @@
+<img src="app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" alt="Logo" width=100 />
+
 # FlyList
 List today's flights
 
@@ -22,19 +24,9 @@ APK available [here](app/build/outputs/apk/debug/app-debug.apk). ICAO Airports l
 - Add floating button in details page for a reservation
 
 ## Screenshots
-<span>
-    <figure>
-        <img src="screenshots/1.png" alt="Main screen" width=500>
-        <figcaption>Main screen of the app</figcaption>
-    </figure>
-    <figure>
-        <img src="screenshots/2.png" alt="Detail screen" width=500>
-        <figcaption>Detail screen of the app</figcaption>
-    </figure>
-    <figure>
-        <img src="screenshots/3.gif" alt="Filter page gif" width=500>
-        <figcaption>Demo of the filter feature</figcaption>
-    </figure>
-</span>
+Main screen of the app | Detail screen of the app | Demo of the filter feature
+:---:|:---:|:---:
+<img src="screenshots/1.png" alt="Main screen" width=300 /> | <img src="screenshots/2.png" alt="Detail screen" width=300 /> | <img src="screenshots/3.gif" alt="Filter page gif" width=300 />
 
+---
 > Antoine LETHIMONNIER - ESIEA 3A UFA - 2021
