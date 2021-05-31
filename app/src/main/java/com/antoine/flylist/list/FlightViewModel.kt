@@ -30,14 +30,22 @@ open class FlightViewModel(initialCall: Call<List<Flight>>) : ViewModel() {
                         flightList.value = FetchSuccess(response.body()!!)
                     } else {
                         flightList.value = FetchError(response.message())
-                        Toast.makeText(context, response.message(), Toast.LENGTH_LONG).show()
+                        if (response.message().isNotBlank()) Toast.makeText(
+                            context,
+                            response.message(),
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 } else {
                     val errorString =
                         response.errorBody()!!.string().replace("[", "").replace("]", "")
                             .replace("\"", "")
                     flightList.value = FetchError(errorString)
-                    Toast.makeText(context, errorString, Toast.LENGTH_LONG).show()
+                    if (response.message().isNotBlank()) Toast.makeText(
+                        context,
+                        errorString,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
 

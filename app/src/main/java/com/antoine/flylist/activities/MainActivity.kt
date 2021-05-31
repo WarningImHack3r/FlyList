@@ -20,7 +20,6 @@ import com.antoine.flylist.utils.Utils
 
 
 class MainActivity : AppCompatActivity() {
-    // TODO: detail async + mvvm, floating button
 
     lateinit var viewModel: FlightViewModel
 
